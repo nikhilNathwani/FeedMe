@@ -10,10 +10,6 @@ query="save as"
 startDate="07/01/16"
 endDate="07/18/16"
 
-#returns user's query string and time interval
-def getUserInput():
-	pass
-
 
 #NOTES:
 #--Columns are fixed for now
@@ -53,7 +49,12 @@ def columnsToJSON(soup):
 	return feedback
 		
 
-
+#returns the driver
+def initializeWebDriver():
+	driver = webdriver.PhantomJS() 
+	driver.get(formatQueryURL("Save as",'2016-07-15','2016-07-20'))
+	element = WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CLASS_NAME, "vis-tooltip")))	
+	return driver
 
 
 #add timeouts for these webdriver functions
