@@ -37,16 +37,17 @@ def formatQueryURL(query,startDate="",endDate=""):
 def columnsToJSON(soup):
 	body= soup.find("table",{"class" : "kbn-table"}).find("tbody")
 	rows= body.findAll('tr', {"class" : "discover-table-row"})
-	feedback= []
+	
 	#column order: time, comment, product, build, ofeedback url
-	colTitles= ["time", "comment", "product", "build", "url"]
+	json= {'headers':["time", "comment", "product", "build", "url"], 'rows':[]}
+
 	for row in rows:
-		feedback.append({})
+		json["rows"].append([])
 		cols= row.findAll('td')
 		for i,col in enumerate(cols[1:]):
-			feedback[-1][colTitles[i]]= col.text.encode("ascii","ignore")
-		#print feedback[-1]
-	return feedback
+			json["rows"][-1].append(col.text.encode("ascii","ignore"))
+
+	return json
 		
 
 #returns the driver
@@ -75,6 +76,7 @@ if __name__ == "__main__":
 	driver.save_screenshot('screen1.png') # save a screenshot to disk
 	print "got screenshot", time.time()-t
 
-	columnsToJSON(BeautifulSoup(driver.page_source, "html.parser"))
+	c= columnsToJSON(BeautifulSoup(driver.page_source, "html.parser"))
+	print c
 
 
