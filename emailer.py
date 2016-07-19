@@ -11,7 +11,7 @@ def constructEmail(feedJSON):
 				<style type="text/css">
 					table {
 					  border-collapse: collapse;
-					  font-family: Segoe UI;
+					  font-family: Segoe UI, sans-serif;
 					}
 					td, th {
 					  border: 1px solid #999;
