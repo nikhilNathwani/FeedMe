@@ -9,8 +9,7 @@ from bs4 import BeautifulSoup
 query="save as"
 startDate="07/01/16"
 endDate="07/18/16"
-
-
+months= {'January':1,'February':2,'March':3,'April':4,'May':5,'June':6,'July':7,'August':8,'September':9,'October':10,'November':11,'December':12}
 #NOTES:
 #--Columns are fixed for now
 #--Platforms are fixed for now
@@ -36,11 +35,15 @@ def formatQueryURL(query,startDate="",endDate=""):
 
 def formatColumn(i,cols,isFinalCol):
 	if not(isFinalCol):
+		if i==0:
+			date= cols[i].text.encode("ascii","ignore")
+			month,DD,YYYY= date[:date.find(',')].split(' ')
+			return str(months[month])+"/"+DD[:-2]+'/'+YYYY[-2:]
 		return cols[i].text.encode("ascii","ignore")
 	else: 
 		product, build, url= [elem.text.encode("ascii","ignore") for elem in cols[i:]]
 		build= 'n/a' if build==" - " else build
-		return product + ", build="+build+", <a target=\"_blank\" href="+url+">Comment URL</a>"
+		return product + ", "+build+", <a target=\"_blank\" href="+url+">Comment URL</a>"
 	
 
 def columnsToJSON(soup):
