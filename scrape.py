@@ -34,18 +34,28 @@ def formatQueryURL(query,startDate="",endDate=""):
 	return column'''
 
 
+def formatColumn(i,cols,isFinalCol):
+	if not(isFinalCol):
+		return cols[i].text.encode("ascii","ignore")
+	else: 
+		product, build, url= [elem.text.encode("ascii","ignore") for elem in cols[i:]]
+		build= 'n/a' if build==" - " else build
+		return product + ", build="+build+", <a target=\"_blank\" href="+url+">Comment URL</a>"
+	
+
 def columnsToJSON(soup):
 	body= soup.find("table",{"class" : "kbn-table"}).find("tbody")
 	rows= body.findAll('tr', {"class" : "discover-table-row"})
 	
 	#column order: time, comment, product, build, ofeedback url
-	json= {'headers':["time", "comment", "product", "build", "url"], 'rows':[]}
+	json= {'headers':["#","Time", "Comment", "Metadata"], 'rows':[]}
 
-	for row in rows:
-		json["rows"].append([])
-		cols= row.findAll('td')
-		for i,col in enumerate(cols[1:]):
-			json["rows"][-1].append(col.text.encode("ascii","ignore"))
+	for i,row in enumerate(rows):
+		json["rows"].append([str(i)])
+		cols= row.findAll('td')[1:]
+		numColsAddedToEmail= 3
+		for j in range(numColsAddedToEmail):
+			json["rows"][-1].append(formatColumn(j,cols,j==numColsAddedToEmail-1))
 
 	return json
 		
@@ -77,6 +87,4 @@ if __name__ == "__main__":
 	print "got screenshot", time.time()-t
 
 	c= columnsToJSON(BeautifulSoup(driver.page_source, "html.parser"))
-	print c
-
 
