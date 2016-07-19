@@ -7,13 +7,34 @@ from email.mime.text import MIMEText
 def constructEmail(feedJSON):
 	htmlStart= """\
 		<html>
-			<head></head>
+			<head>
+				<style type="text/css">
+					table {
+					  border-collapse: collapse;
+					  font-family: Segoe UI;
+					}
+					td, th {
+					  border: 1px solid #999;
+					  padding: 0.5rem;
+					  text-align: left;
+					}
+					thead {
+						background-color: red;
+					}
+					.row0 {
+						background-color: blue;
+					}
+					.row1 {
+						background-color: yellow;
+					}
+				</style>
+			</head>
 			<body>
-				<p>Hi!<br>
+				<p style=\"color=red\">Hi!<br>
 					<em>How are you?</em><br>
 					Here is the <a href="https://www.python.org">link</a> you wanted.
 				</p>
-				<table style=\"width:100%\">
+				<table>
 				"""
 	htmlEnd= """\
 				</table>
@@ -26,12 +47,13 @@ def constructEmail(feedJSON):
 		table+= "<th>"+header+"</th>"
 	table+= "</tr>"
 
-
+	parity= 0
 	for row in feedJSON['rows']:
-		table+= "<tr>"
+		table+= "<tr class=\"row\"" + str(parity) +">"
 		for col in row:
 			table+= "<td>" + col + "</td>"
 		table+= "</tr>"
+		parity= 0 if parity==1 else 0 
 
 	return htmlStart+table+htmlEnd
 
@@ -39,7 +61,7 @@ def constructEmail(feedJSON):
 def sendEmail(feedJSON):
 	#sender and recipient
 	me= "DocsTest1@docse3testtenant.onmicrosoft.com"
-	you= "njn27@cornell.edu"
+	you= "nikhilna@microsoft.com"
 
 	#message container
 	msg= MIMEMultipart('alternative')
