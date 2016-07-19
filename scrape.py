@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
+from bs4 import BeautifulSoup
 
 query="save as"
 startDate="07/01/16"
@@ -27,6 +28,18 @@ def formatQueryURL(query,startDate="",endDate=""):
 	return urlBase+time+urlMid+q+urlEnd
 
 
+def getCommentColumn(soup):
+	body= soup.find("table",{"class" : "kbn-table"}).find("tbody")
+	rows= body.findAll('tr', {"class" : "discover-table-row"})
+	comments= []
+	for row in rows:
+		c= row.findAll('td')[-1].text
+		comments.append(c)
+	return column
+
+
+
+#add timeouts for these webdriver functions
 if __name__ == "__main__":
 	print "starting program"
 	t= time.time()
@@ -43,5 +56,7 @@ if __name__ == "__main__":
 
 	driver.save_screenshot('screen1.png') # save a screenshot to disk
 	print "got screenshot", time.time()-t
+
+	getCommentColumn(BeautifulSoup(driver.page_source, "html.parser"))
 
 
