@@ -19,43 +19,40 @@ def constructEmail(feedJSON):
 					  text-align: left;
 					}
 					thead {
-						background-color: red;
-					}
-					.row0 {
-						background-color: blue;
-					}
-					.row1 {
-						background-color: yellow;
+						background-color: #DCE5EE;
 					}
 				</style>
 			</head>
 			<body>
-				<p style=\"color=red\">Hi!<br>
-					<em>How are you?</em><br>
-					Here is the <a href="https://www.python.org">link</a> you wanted.
-				</p>
-				<table>
-				"""
+		"""
+	p= feedJSON['preamble']
+	num, early, late, build, hits= str(p["numFeedback"]), p["earliestComment"], p["latestComment"], p["mostCommonBuild"], str(p["maxBuildHits"])
+	preamble= "<strong># Comments: </strong>" + num + "<br><strong>Earliest comment: </strong>" + early + "<br><strong>Latest comment: </strong>" + late + "<br><strong>Most common build: </strong>" + build + " (" + hits + " hits)"
+
 	htmlEnd= """\
+					</tbody>
 				</table>
 			</body>
 		</html>
 		"""
 
-	table= "<tr>"
+	table= "<table><thead><tr>"
 	for header in feedJSON['headers']:
 		table+= "<th>"+header+"</th>"
-	table+= "</tr>"
+	table+= "</tr></thead><tbody>"
 
-	parity= 0
-	for row in feedJSON['rows']:
-		table+= "<tr class=\"row\"" + str(parity) +">"
+	for i,row in enumerate(feedJSON['rows']):
+		
+		table+= "<tr"
+		if i%2==0:
+			table += "style=\"background-color: #red;\""
+		table+= ">"
+
 		for col in row:
 			table+= "<td>" + col + "</td>"
 		table+= "</tr>"
-		parity= 0 if parity==1 else 0 
 
-	return htmlStart+table+htmlEnd
+	return htmlStart+preamble+table+htmlEnd
 
 
 def sendEmail(feedJSON):
