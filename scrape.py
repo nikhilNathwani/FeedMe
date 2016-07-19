@@ -52,14 +52,30 @@ def columnsToJSON(soup):
 	
 	#column order: time, comment, product, build, ofeedback url
 	json= {'headers':["#","Time", "Comment", "Metadata"], 'rows':[]}
+	json['preamble']= {'numFeedback':len(rows),'earliestComment':rows[-1].findAll('td')[1].text.encode("ascii","ignore"),'latestComment':rows[0].findAll('td')[1].text.encode("ascii","ignore")}
+	buildHits= {}
+
+	print "PREAMBLE!!!!", json['preamble']
 
 	for i,row in enumerate(rows):
-		json["rows"].append([str(i)])
-		cols= row.findAll('td')[1:]
+		json["rows"].append([str(i)]) #add row # in as first column
+		cols= row.findAll('td')[1:] #skip over first folumn, which is justa a dropdown button
 		numColsAddedToEmail= 3
+		
+		#add to buildHits dict
+		build= cols[3].text.encode("ascii","ignore")
+		if build != ' - ':
+			buildHits[build] = buildHits.get(build, 0) + 1
+
+		#format columns as json for each row 
 		for j in range(numColsAddedToEmail):
 			json["rows"][-1].append(formatColumn(j,cols,j==numColsAddedToEmail-1))
 
+		#find max build hits
+		json['preamble']['mostCommonBuild']= max(buildHits, key=buildHits.get)
+		json['preamble']['maxBuildHits']= buildHits[json['preamble']['mostCommonBuild']]
+
+	print json['preamble']
 	return json
 		
 
