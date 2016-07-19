@@ -19,7 +19,7 @@ def constructEmail(feedJSON):
 					  text-align: left;
 					}
 					thead {
-						background-color: #DCE5EE;
+						background-color: #94B6D2;
 					}
 				</style>
 			</head>
@@ -43,9 +43,9 @@ def constructEmail(feedJSON):
 
 	for i,row in enumerate(feedJSON['rows']):
 		
-		table+= "<tr"
+		table+= "<tr "
 		if i%2==0:
-			table += "style=\"background-color: #red;\""
+			table += "style=\"background-color: #DCE5EE;\""
 		table+= ">"
 
 		for col in row:
