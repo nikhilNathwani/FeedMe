@@ -6,10 +6,11 @@ from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from bs4 import BeautifulSoup
 
-query="save as"
+query="share"
 startDate="07/01/16"
 endDate="07/18/16"
 months= {'January':1,'February':2,'March':3,'April':4,'May':5,'June':6,'July':7,'August':8,'September':9,'October':10,'November':11,'December':12}
+
 #NOTES:
 #--Columns are fixed for now
 #--Platforms are fixed for now
@@ -21,16 +22,6 @@ def formatQueryURL(query,startDate="",endDate=""):
 	q= 'query:\'(comment:%22'+query.replace(' ','%20')+'%22)%20AND%20(product:%22desktop%20word%22%20OR%20%22desktop%20powerpoint%22%20OR%20%22desktop%20excel%22)\')),'
 	urlEnd= 'sort:!(submitDate,desc))'
 	return urlBase+time+urlMid+q+urlEnd
-
-
-'''def getCommentColumn(soup):
-	body= soup.find("table",{"class" : "kbn-table"}).find("tbody")
-	rows= body.findAll('tr', {"class" : "discover-table-row"})
-	comments= []
-	for row in rows:
-		c= row.findAll('td')[-1].text
-		comments.append(c)
-	return column'''
 
 
 def formatColumn(i,cols,isFinalCol):
@@ -55,8 +46,6 @@ def columnsToJSON(soup):
 	json['preamble']= {'numFeedback':len(rows),'earliestComment':rows[-1].findAll('td')[1].text.encode("ascii","ignore"),'latestComment':rows[0].findAll('td')[1].text.encode("ascii","ignore")}
 	buildHits= {}
 
-	print "PREAMBLE!!!!", json['preamble']
-
 	for i,row in enumerate(rows):
 		json["rows"].append([str(i)]) #add row # in as first column
 		cols= row.findAll('td')[1:] #skip over first folumn, which is justa a dropdown button
@@ -75,14 +64,14 @@ def columnsToJSON(soup):
 		json['preamble']['mostCommonBuild']= max(buildHits, key=buildHits.get)
 		json['preamble']['maxBuildHits']= buildHits[json['preamble']['mostCommonBuild']]
 
-	print json['preamble']
+	#print json['preamble']
 	return json
 		
 
 #returns the driver
-def initializeWebDriver():
+def initializeWebDriver(query="save as", startDate='2016-07-01', endDate='2016-07-22'):
 	driver = webdriver.PhantomJS() 
-	driver.get(formatQueryURL("Save as",'2016-07-15','2016-07-20'))
+	driver.get(formatQueryURL(query,startDate,endDate))
 	element = WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CLASS_NAME, "vis-tooltip")))	
 	return driver
 

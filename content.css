@@ -1,0 +1,22 @@
+table {
+  border-collapse: collapse;
+  font-family: Segoe UI;
+}
+
+td, th {
+  border: 1px solid #999;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+thead {
+	background-color: #94B6D2;
+}
+
+.row1 {
+	background-color: #DCE5EE;
+}
+
+.row2 {
+	background-color: #EFF3F7;
+}

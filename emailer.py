@@ -55,10 +55,9 @@ def constructEmail(feedJSON):
 	return htmlStart+preamble+table+htmlEnd
 
 
-def sendEmail(feedJSON):
+def sendEmail(feedJSON, you="nikhilna@microsoft.com"):
 	#sender and recipient
 	me= "DocsTest1@docse3testtenant.onmicrosoft.com"
-	you= "nikhilna@microsoft.com"
 
 	#message container
 	msg= MIMEMultipart('alternative')
@@ -68,12 +67,12 @@ def sendEmail(feedJSON):
 
 	#message body 
 	html= constructEmail(feedJSON)
-	print "Completed writing email!"
+	#print "Completed writing email!"
 
 	#Record MIME types of both parts
 	part= MIMEText(html,'html')
 	msg.attach(part)
-	print "Attached to container!"
+	#print "Attached to container!"
 
 	#send message via local SMTP server
 	mail = smtplib.SMTP('smtp.office365.com', 587)

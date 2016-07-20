@@ -14,7 +14,6 @@ if __name__ == "__main__":
 	print "JSONify complete", time.time()-t
 	t=time.time()
 
-	print feedJSON
 	sendEmail(feedJSON)
 	print "Email sent!", time.time()-t
 
