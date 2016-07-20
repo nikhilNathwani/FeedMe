@@ -8,11 +8,17 @@ from selenium.common.exceptions import *
 #REMEBER TO CHANGE THE HARD-CODED 'save as' BELOW!!!!
 #And should move the try/except into a function, so I don't have to keep copying it over between main methods
 if __name__ == "__main__":
+	if len(sys.argv)>1:
+		guid= sys.argv[1]
+	else:
+		print "didn't receive GUID"
+		sys.exit()
+
 	print "starting program"
 	t= time.time()
 
 	try:
-		driver= initializeWebDriver()
+		driver= initializeWebDriver(guid=guid)
 	except TimeoutException:
 		sendEmail({'rows':[],'params':{'query':'save as'}})
 		print "Email sent!"

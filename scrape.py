@@ -5,6 +5,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from bs4 import BeautifulSoup
+from datetime import datetime, timedelta
+import sys
+import os
 
 query="share"
 startDate="07/01/16"
@@ -15,9 +18,12 @@ months= {'January':1,'February':2,'March':3,'April':4,'May':5,'June':6,'July':7,
 #--Columns are fixed for now
 #--Platforms are fixed for now
 #dates formatted as YYYY-MM-DD
-def formatQueryURL(query,startDate="",endDate=""):
+def formatQueryURL(query,startDate="",endDate="", usedJSON=False):
 	urlBase= 'http://ofeedbackdashboard.cloudapp.net/?#/discover?_g=(refreshInterval:(display:Off,pause:!f,section:0,value:0),'
-	time= 'time:(from:\''+startDate+'T04:00:00.000Z\',mode:absolute,to:\''+endDate+'T03:59:59.999Z\'))'
+	if usedJSON==False:
+		time= 'time:(from:\''+startDate+'T04:00:00.000Z\',mode:absolute,to:\''+endDate+'T03:59:59.999Z\'))'
+	else: 
+		time= 'time:(from:\''+startDate+'Z\',mode:absolute,to:\''+endDate+'Z\'))'
 	urlMid= '&_a=(columns:!(comment,product,officeBuild,commentURL),index:feedback,interval:auto,query:(query_string:(analyze_wildcard:!t,'
 	q= 'query:\'(comment:%22'+query.replace(' ','%20')+'%22)%20AND%20(product:%22desktop%20word%22%20OR%20%22desktop%20powerpoint%22%20OR%20%22desktop%20excel%22)\')),'
 	urlEnd= 'sort:!(submitDate,desc))'
@@ -68,16 +74,52 @@ def columnsToJSON(soup, searchParams={'query':"save as"}):
 	return json
 		
 
+def getStartDate(chosenDays):
+	dayNums= {0:'Monday',1:'Tuesday',2:'Wednesday',3:'Thursday',4:'Friday',5:'Saturday',6:'Sunday'}
+	
+	dayNum= datetime.today().weekday()
+	delta= 0
+	startDate= ""
+
+	while startDate=="":
+		dayNum= (dayNum-1)%7
+		delta+= 1
+		if dayNums[dayNum] in chosenDays:
+			startDate= datetime.now() - timedelta(days=delta)
+
+	return str(datetime.strftime(startDate, '%Y-%m-%dT%H:%M:%S'))+'.000'
+
+
+
+def getUserDataFromJSON(guid):
+	#read in existing JSON
+	currentDir= os.getcwd()
+	with open(currentDir+'\\config.json') as data_file:    
+		data = json.load(data_file)
+
+	userJSON= data[guid]
+	query= userJSON["query"].encode("ascii","ignore")
+	startDate= getStartDate(userJSON['days'])
+	endDate= str(datetime.strftime(datetime.now(), '%Y-%m-%dT%H:%M:%S'))+'.000'
+
+	return query, startDate, endDate
+
+
 #returns the driver
-def initializeWebDriver(query="save as", startDate='2016-07-01', endDate='2016-07-22'):
+def initializeWebDriver(query="save as", startDate='2016-07-01', endDate='2016-07-22', guid=""):
 	driver = webdriver.PhantomJS() 
-	driver.get(formatQueryURL(query,startDate,endDate))
+	if guid!="":
+		query,startDate,endDate= getUserDataFromJSON(guid)
+	driver.get(formatQueryURL(query,startDate,endDate,usedJSON=(guid!="")))
 	element = WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CLASS_NAME, "vis-tooltip")))	
 	return driver
 
 
 #add timeouts for these webdriver functions
 if __name__ == "__main__":
+	print getUserDataFromJSON("119264c7-a420-46d0-8b08-3678aa245f9d")
+	sys.exit()
+
 	print "starting program"
 	t= time.time()
 
