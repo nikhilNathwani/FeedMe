@@ -77,7 +77,7 @@ def createTaskXML(days,GUID):
 		    <Principal id="Author">
 		      <UserId>S-1-5-21-124525095-708259637-1543119021-1464612</UserId>
 		      <LogonType>Password</LogonType>
-		      <RunLevel>HighestAvailable</RunLevel>
+		      <RunLevel>LeastPrivilege</RunLevel>
 		    </Principal>
 		  </Principals>
 		  <Settings>
