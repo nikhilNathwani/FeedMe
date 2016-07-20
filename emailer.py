@@ -10,7 +10,7 @@ def constructEmail(feedJSON):
 		<html>
 			<head></head>
 			<body>
-				<p>There is no feedback matching your query within the specified time interval. If you believe you're seeing this in error, please contact <a href=\"mailto:nikhilna@microsoft.com\">Nikhil</a>.</p>
+				<p>There is no feedback matching \'""" + feedJSON['params']['query'] + """\' within the specified time interval. If you believe you're seeing this in error, please contact <a href=\"mailto:nikhilna@microsoft.com\">Nikhil</a>.</p>
 			</body>
 		</html>
 		"""
@@ -71,7 +71,7 @@ def sendEmail(feedJSON, you="nikhilna@microsoft.com"):
 
 	#message container
 	msg= MIMEMultipart('alternative')
-	msg['Subject']= "Python email test"
+	msg['Subject']= "Your Latest \'"+ feedJSON['params']['query'] + "\' Feedback is Ready"
 	msg['From']= me
 	msg['To']= you
 

@@ -11,13 +11,13 @@ if __name__ == "__main__":
 	print "Got it. This will take about 20 seconds..."
 
 	try:
-		driver= initializeWebDriver()
+		driver= initializeWebDriver(q)
 	except TimeoutException:
-		sendEmail({'rows':[]})
+		sendEmail({'rows':[],'params':{'query':q}})
 		print "Email sent!"
 		sys.exit()
 
-	feedJSON= columnsToJSON(BeautifulSoup(driver.page_source, "html.parser"))
+	feedJSON= columnsToJSON(BeautifulSoup(driver.page_source, "html.parser"),{'query':q})
 	#print "JSONify complete", time.time()-t
 	#t=time.time()
 

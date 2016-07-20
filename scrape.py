@@ -37,12 +37,12 @@ def formatColumn(i,cols,isFinalCol):
 		return product + ", "+build+", <a target=\"_blank\" href="+url+">Comment URL</a>"
 	
 
-def columnsToJSON(soup):
+def columnsToJSON(soup, searchParams={'query':"save as"}):
 	body= soup.find("table",{"class" : "kbn-table"}).find("tbody")
 	rows= body.findAll('tr', {"class" : "discover-table-row"})
 	
 	#column order: time, comment, product, build, ofeedback url
-	json= {'headers':["#","Time", "Comment", "Metadata"], 'rows':[]}
+	json= {'headers':["#","Time", "Comment", "Metadata"], 'rows':[], 'params':searchParams}
 	json['preamble']= {'numFeedback':len(rows),'earliestComment':rows[-1].findAll('td')[1].text.encode("ascii","ignore"),'latestComment':rows[0].findAll('td')[1].text.encode("ascii","ignore")}
 	buildHits= {}
 
@@ -69,7 +69,7 @@ def columnsToJSON(soup):
 		
 
 #returns the driver
-def initializeWebDriver(query="sddfdssdfsdsdfsaasas", startDate='2016-07-01', endDate='2016-07-22'):
+def initializeWebDriver(query="save as", startDate='2016-07-01', endDate='2016-07-22'):
 	driver = webdriver.PhantomJS() 
 	driver.get(formatQueryURL(query,startDate,endDate))
 	element = WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CLASS_NAME, "vis-tooltip")))	

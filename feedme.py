@@ -4,6 +4,8 @@ import time
 import sys
 from selenium.common.exceptions import *
 
+
+#REMEBER TO CHANGE THE HARD-CODED 'save as' BELOW!!!!
 if __name__ == "__main__":
 	print "starting program"
 	t= time.time()
@@ -11,7 +13,7 @@ if __name__ == "__main__":
 	try:
 		driver= initializeWebDriver()
 	except TimeoutException:
-		sendEmail({'rows':[]})
+		sendEmail({'rows':[],'params':{'query':'save as'}})
 		print "Email sent!"
 		sys.exit()
 
