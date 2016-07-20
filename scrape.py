@@ -46,7 +46,7 @@ def formatColumn(i,cols,isFinalCol):
 def columnsToJSON(soup, searchParams={'query':"save as"}):
 	body= soup.find("table",{"class" : "kbn-table"}).find("tbody")
 	rows= body.findAll('tr', {"class" : "discover-table-row"})
-	
+
 	#column order: time, comment, product, build, ofeedback url
 	json= {'headers':["#","Time", "Comment", "Metadata"], 'rows':[], 'params':searchParams}
 	json['preamble']= {'numFeedback':len(rows),'earliestComment':rows[-1].findAll('td')[1].text.encode("ascii","ignore"),'latestComment':rows[0].findAll('td')[1].text.encode("ascii","ignore")}
@@ -66,9 +66,9 @@ def columnsToJSON(soup, searchParams={'query':"save as"}):
 		for j in range(numColsAddedToEmail):
 			json["rows"][-1].append(formatColumn(j,cols,j==numColsAddedToEmail-1))
 
-		#find max build hits
-		json['preamble']['mostCommonBuild']= max(buildHits, key=buildHits.get)
-		json['preamble']['maxBuildHits']= buildHits[json['preamble']['mostCommonBuild']]
+	#find max build hits
+	json['preamble']['mostCommonBuild']= max(buildHits, key=buildHits.get)
+	json['preamble']['maxBuildHits']= buildHits[json['preamble']['mostCommonBuild']]
 
 	#print json['preamble']
 	return json
