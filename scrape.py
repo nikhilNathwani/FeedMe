@@ -53,7 +53,7 @@ def columnsToJSON(soup, searchParams={'query':"save as"}):
 	buildHits= {}
 
 	for i,row in enumerate(rows):
-		json["rows"].append([str(i)]) #add row # in as first column
+		json["rows"].append([str(i+1)]) #add row # in as first column
 		cols= row.findAll('td')[1:] #skip over first folumn, which is justa a dropdown button
 		numColsAddedToEmail= 3
 		
