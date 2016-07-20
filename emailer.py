@@ -10,7 +10,7 @@ def constructEmail(feedJSON):
 		<html>
 			<head></head>
 			<body>
-				<p>There is no feedback matching \'""" + feedJSON['params']['query'] + """\' within the specified time interval. If you believe you're seeing this in error, please contact <a href=\"mailto:nikhilna@microsoft.com\">Nikhil</a>.</p>
+				<p>There is no Desktop Office W/X/P send-a-smile feedback matching \'""" + feedJSON['params']['query'] + """\' within the specified time interval. If you believe you're seeing this in error, please contact <a href=\"mailto:nikhilna@microsoft.com\">Nikhil</a>.</p>
 			</body>
 		</html>
 		"""

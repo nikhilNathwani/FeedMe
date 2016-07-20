@@ -6,6 +6,7 @@ from selenium.common.exceptions import *
 
 
 #REMEBER TO CHANGE THE HARD-CODED 'save as' BELOW!!!!
+#And should move the try/except into a function, so I don't have to keep copying it over between main methods
 if __name__ == "__main__":
 	print "starting program"
 	t= time.time()
