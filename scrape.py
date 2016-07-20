@@ -43,12 +43,12 @@ def formatColumn(i,cols,isFinalCol):
 		return product + ", "+build+", <a target=\"_blank\" href="+url+">Comment URL</a>"
 	
 
-def columnsToJSON(soup, searchParams={'query':"save as"}):
+def columnsToJSON(soup):
 	body= soup.find("table",{"class" : "kbn-table"}).find("tbody")
 	rows= body.findAll('tr', {"class" : "discover-table-row"})
 
 	#column order: time, comment, product, build, ofeedback url
-	json= {'headers':["#","Time", "Comment", "Metadata"], 'rows':[], 'params':searchParams}
+	json= {'headers':["#","Time", "Comment", "Metadata"], 'rows':[]}
 	json['preamble']= {'numFeedback':len(rows),'earliestComment':rows[-1].findAll('td')[1].text.encode("ascii","ignore"),'latestComment':rows[0].findAll('td')[1].text.encode("ascii","ignore")}
 	buildHits= {}
 
@@ -90,27 +90,10 @@ def getStartDate(chosenDays):
 	return str(datetime.strftime(startDate, '%Y-%m-%dT%H:%M:%S'))+'.000'
 
 
-
-def getUserDataFromJSON(guid):
-	#read in existing JSON
-	currentDir= os.getcwd()
-	with open(currentDir+'\\config.json') as data_file:    
-		data = json.load(data_file)
-
-	userJSON= data[guid]
-	query= userJSON["query"].encode("ascii","ignore")
-	startDate= getStartDate(userJSON['days'])
-	endDate= str(datetime.strftime(datetime.now(), '%Y-%m-%dT%H:%M:%S'))+'.000'
-
-	return query, startDate, endDate
-
-
 #returns the driver
-def initializeWebDriver(query="save as", startDate='2016-07-01', endDate='2016-07-22', guid=""):
+def initializeWebDriver(query="save as", startDate='2016-07-01', endDate='2016-07-22', usedJSON=False):
 	driver = webdriver.PhantomJS() 
-	if guid!="":
-		query,startDate,endDate= getUserDataFromJSON(guid)
-	driver.get(formatQueryURL(query,startDate,endDate,usedJSON=(guid!="")))
+	driver.get(formatQueryURL(query,startDate,endDate,usedJSON))
 	element = WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CLASS_NAME, "vis-tooltip")))	
 	return driver
 

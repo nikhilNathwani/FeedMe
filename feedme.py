@@ -4,6 +4,20 @@ import time
 import sys
 from selenium.common.exceptions import *
 
+def getUserDataFromJSON(guid):
+	#read in existing JSON
+	currentDir= os.getcwd()
+	with open(currentDir+'\\config.json') as data_file:    
+		data = json.load(data_file)
+
+	userJSON= data[guid]
+	query= userJSON["query"].encode("ascii","ignore")
+	startDate= getStartDate(userJSON['days'])
+	endDate= str(datetime.strftime(datetime.now(), '%Y-%m-%dT%H:%M:%S'))+'.000'
+	emailAddr= userJSON["emailAddr"].encode("ascii","ignore")
+
+	return query, startDate, endDate, emailAddr
+
 
 #REMEBER TO CHANGE THE HARD-CODED 'save as' BELOW!!!!
 #And should move the try/except into a function, so I don't have to keep copying it over between main methods
@@ -17,8 +31,10 @@ if __name__ == "__main__":
 	print "starting program"
 	t= time.time()
 
+	query,startDate,endDate,emailAddr= getUserDataFromJSON(guid)
+
 	try:
-		driver= initializeWebDriver(guid=guid)
+		driver= initializeWebDriver(query, startDate, endDate, True)
 	except TimeoutException:
 		sendEmail({'rows':[],'params':{'query':'save as'}})
 		print "Email sent!"
@@ -31,6 +47,6 @@ if __name__ == "__main__":
 	print "JSONify complete", time.time()-t
 	t=time.time()
 
-	sendEmail(feedJSON)
+	sendEmail(feedJSON,{'query':query,'emailAddr':emailAddr})
 	print "Email sent!", time.time()-t
 

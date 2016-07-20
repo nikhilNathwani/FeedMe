@@ -65,13 +65,15 @@ def constructEmail(feedJSON):
 	return htmlStart+preamble+table+htmlEnd
 
 
-def sendEmail(feedJSON, you="nikhilna@microsoft.com"):
+#params has 'query' and 'emailAddr'
+def sendEmail(feedJSON, params):
 	#sender and recipient
 	me= "DocsTest1@docse3testtenant.onmicrosoft.com"
+	you= params['emailAddr']
 
 	#message container
 	msg= MIMEMultipart('alternative')
-	msg['Subject']= "Your Latest \'"+ feedJSON['params']['query'] + "\' Feedback is Ready"
+	msg['Subject']= "Your Latest \'"+ params['query'] + "\' Feedback is Ready"
 	msg['From']= me
 	msg['To']= you
 
