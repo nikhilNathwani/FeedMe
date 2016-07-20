@@ -69,7 +69,7 @@ def columnsToJSON(soup):
 		
 
 #returns the driver
-def initializeWebDriver(query="save as", startDate='2016-07-01', endDate='2016-07-22'):
+def initializeWebDriver(query="sddfdssdfsdsdfsaasas", startDate='2016-07-01', endDate='2016-07-22'):
 	driver = webdriver.PhantomJS() 
 	driver.get(formatQueryURL(query,startDate,endDate))
 	element = WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CLASS_NAME, "vis-tooltip")))	

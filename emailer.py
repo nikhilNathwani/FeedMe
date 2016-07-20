@@ -5,6 +5,16 @@ from email.mime.text import MIMEText
 
 
 def constructEmail(feedJSON):
+	if len(feedJSON['rows'])==0:
+		return """\
+		<html>
+			<head></head>
+			<body>
+				<p>There is no feedback matching your query within the specified time interval. If you believe you're seeing this in error, please contact <a href=\"mailto:nikhilna@microsoft.com\">Nikhil</a>.</p>
+			</body>
+		</html>
+		"""
+
 	htmlStart= """\
 		<html>
 			<head>
