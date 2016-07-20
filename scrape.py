@@ -48,7 +48,7 @@ def columnsToJSON(soup):
 	rows= body.findAll('tr', {"class" : "discover-table-row"})
 
 	#column order: time, comment, product, build, ofeedback url
-	json= {'headers':["#","Time", "Comment", "Metadata"], 'rows':[]}
+	json= {'headers':["#","Date", "Comment", "Metadata"], 'rows':[]}
 	json['preamble']= {'numFeedback':len(rows),'earliestComment':rows[-1].findAll('td')[1].text.encode("ascii","ignore"),'latestComment':rows[0].findAll('td')[1].text.encode("ascii","ignore")}
 	buildHits= {}
 
