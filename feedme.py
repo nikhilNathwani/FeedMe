@@ -33,11 +33,8 @@ if __name__ == "__main__":
 
 	query,startDate,endDate,emailAddr= getUserDataFromJSON(guid)
 
-	try:
-		driver= initializeWebDriver(query, startDate, endDate, True)
-	except TimeoutException:
-		sendEmail({'rows':[],'params':{'query':'save as'}})
-		print "Email sent!"
+	driver= initializeWebDriver(query, startDate, endDate, True)
+	if driver=="":
 		sys.exit()
 
 	print "Driver initialized", time.time()-t
