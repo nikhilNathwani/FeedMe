@@ -17,7 +17,7 @@ if __name__ == "__main__":
 		print "Email sent!"
 		sys.exit()
 
-	feedJSON= columnsToJSON(BeautifulSoup(driver.page_source, "html.parser"),{'query':q})
+	feedJSON= columnsToJSON(BeautifulSoup(driver.page_source, "html.parser"))
 	#print "JSONify complete", time.time()-t
 	#t=time.time()
 
