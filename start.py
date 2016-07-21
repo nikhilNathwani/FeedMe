@@ -77,18 +77,18 @@ def createTaskXML(days,GUID):
 		    <Principal id="Author">
 		      <UserId>S-1-5-21-124525095-708259637-1543119021-1464612</UserId>
 		      <LogonType>Password</LogonType>
-		      <RunLevel>LeastPrivilege</RunLevel>
+		      <RunLevel>HighestAvailable</RunLevel>
 		    </Principal>
 		  </Principals>
 		  <Settings>
 		    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
-		    <DisallowStartIfOnBatteries>true</DisallowStartIfOnBatteries>
+		    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
 		    <StopIfGoingOnBatteries>true</StopIfGoingOnBatteries>
 		    <AllowHardTerminate>true</AllowHardTerminate>
-		    <StartWhenAvailable>false</StartWhenAvailable>
+		    <StartWhenAvailable>true</StartWhenAvailable>
 		    <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
 		    <IdleSettings>
-		      <StopOnIdleEnd>true</StopOnIdleEnd>
+		      <StopOnIdleEnd>false</StopOnIdleEnd>
 		      <RestartOnIdle>false</RestartOnIdle>
 		    </IdleSettings>
 		    <AllowStartOnDemand>true</AllowStartOnDemand>
@@ -96,8 +96,8 @@ def createTaskXML(days,GUID):
 		    <Hidden>false</Hidden>
 		    <RunOnlyIfIdle>false</RunOnlyIfIdle>
 		    <DisallowStartOnRemoteAppSession>false</DisallowStartOnRemoteAppSession>
-		    <UseUnifiedSchedulingEngine>false</UseUnifiedSchedulingEngine>
-		    <WakeToRun>false</WakeToRun>
+		    <UseUnifiedSchedulingEngine>true</UseUnifiedSchedulingEngine>
+		    <WakeToRun>true</WakeToRun>
 		    <ExecutionTimeLimit>PT72H</ExecutionTimeLimit>
 		    <Priority>7</Priority>
 		  </Settings>
@@ -107,6 +107,7 @@ def createTaskXML(days,GUID):
 		      <Arguments>"""
 	xml+= GUID
 	xml+="""</Arguments>
+			<WorkingDirectory>C:\Users\\nikhilna\Documents\GitHub\FeedMe\</WorkingDirectory>
 		    </Exec>
 		  </Actions>
 		</Task>
