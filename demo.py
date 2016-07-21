@@ -21,6 +21,6 @@ if __name__ == "__main__":
 	#print "JSONify complete", time.time()-t
 	#t=time.time()
 
-	sendEmail(feedJSON,emailAddr)
+	sendEmail(feedJSON,{'query':q, 'emailAddr':emailAddr})
 	print "Email sent!"#, time.time()-t
 
