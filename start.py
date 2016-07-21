@@ -124,3 +124,4 @@ if __name__ == "__main__":
 	q,d,e,g= getUserInput()
 	j= writeToConfigJSON(q,d,e,g)
 	createTaskXML(d,g)
+	print "\n\nCopy-paste this guid then hit enter:", g

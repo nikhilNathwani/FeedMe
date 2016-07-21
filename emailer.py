@@ -94,7 +94,3 @@ def sendEmail(feedJSON, params):
 	mail.login(me, 'Password!!')
 	mail.sendmail(me, you, msg.as_string())
 	mail.quit()
-
-
-if __name__ == "__main__":
-	sendEmail("")

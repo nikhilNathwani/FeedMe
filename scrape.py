@@ -94,7 +94,13 @@ def getStartDate(chosenDays):
 def initializeWebDriver(query="save as", startDate='2016-07-01', endDate='2016-07-22', usedJSON=False):
 	driver = webdriver.PhantomJS() 
 	driver.get(formatQueryURL(query,startDate,endDate,usedJSON))
-	element = WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CLASS_NAME, "vis-tooltip")))	
+	driver.save_screenshot('screenNOWWW.png') # save a screenshot to disk	
+	try:
+		element = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "vis-tooltip")))
+	except Exception,e:
+		print e
+		return ""
+	driver.save_screenshot('screenAfter.png') # save a screenshot to disk	
 	return driver
 
 
