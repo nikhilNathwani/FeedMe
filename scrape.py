@@ -100,6 +100,18 @@ def initializeWebDriver(query="save as", startDate='2016-07-01', endDate='2016-0
 	except Exception,e:
 		print e
 		return ""
+
+	#deal with infinite scroll
+	pause=0.1
+	lastHeight = driver.execute_script("return document.body.scrollHeight")
+	while True:
+	    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+	    time.sleep(pause)
+	    newHeight = driver.execute_script("return document.body.scrollHeight")
+	    if newHeight == lastHeight:
+	        break
+	    lastHeight = newHeight
+
 	driver.save_screenshot('screenAfter.png') # save a screenshot to disk	
 	return driver
 
